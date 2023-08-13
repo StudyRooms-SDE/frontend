@@ -4,7 +4,7 @@ import { notify } from '@kyvg/vue3-notification';
 const httpClient = axios.create({
   withCredentials: true,
   baseURL: 'http://localhost:8080/api/v1',
-  timeout: 1000,
+  timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -23,6 +23,7 @@ httpClient.defaults.withCredentials = true;
 // httpClient.interceptors.request.use(authInterceptor);
 
 const errorInterceptor = (error: any): Promise<never> => {
+  console.log(error)
   switch (error.response.status) {
     case 401:
       console.log(error.response.data);

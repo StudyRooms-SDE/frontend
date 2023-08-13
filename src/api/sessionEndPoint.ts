@@ -1,13 +1,13 @@
 import httpClient from '@/api/httpClient';
-import { Session } from '@/models/session';
+import { SessionResponse, SessionDetails } from '@/models/session';
 
 const sessionEndPoint = {
   getSessions: () => {
-    return httpClient.get<Session[]>('/sessions', {});
+    return httpClient.get<SessionResponse[]>('/sessions', {});
   },
 
   getSessionDetails: (id: string) => {
-    return httpClient.get<Session>('/sessions/' + id, {});
+    return httpClient.get<SessionDetails>('/sessions/' + id, {});
   },
 };
 

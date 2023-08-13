@@ -25,6 +25,12 @@ const router = createRouter({
       name: 'ProfileView',
       component: () => import('../views/ProfileView.vue'),
     },
+    {
+      path: '/sessions/:id',
+      name: 'SessionView',
+      component: () => import('../views/SessionView.vue'),
+      props: true,
+    },
   ],
 });
 

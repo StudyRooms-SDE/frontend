@@ -3,12 +3,13 @@ import { useSessionStore } from '@/stores/sessionStore';
 import { mapActions, mapState } from 'pinia';
 import { defineComponent } from 'vue';
 import { DateTime } from 'luxon';
+import { PrintableSession } from '@/models/session';
 
 export default defineComponent({
   name: 'DashboardView',
   data() {
     return {
-      printableSessions: [] as any[],
+      printableSessions: [] as PrintableSession[],
     };
   },
   computed: {
@@ -30,17 +31,23 @@ export default defineComponent({
         'it',
       );
       const endDate = DateTime.fromFormat(session.endTime, "yyyy-MM-dd'T'HH:mm:ss").setLocale('it');
-      console.log(startDate, endDate);
 
-      return {
-        id: session.id,
-        building: session.building,
-        topic: session.topic,
-        startDate: startDate.toLocaleString(DateTime.DATE_SHORT),
-        endDate: endDate.toLocaleString(DateTime.DATE_SHORT),
-        startTime: startDate.toLocaleString(DateTime.TIME_SIMPLE),
-        endTime: endDate.toLocaleString(DateTime.TIME_SIMPLE),
-      };
+      if (startDate.day !== endDate.day) {
+        this.$notify({
+          title: 'Session error',
+          text: 'Session ' + session.subject + ' spans over two days',
+          type: 'error',
+        });
+      }
+      return new PrintableSession(
+        session.sessionId,
+        session.building,
+        session.subject,
+        '',
+        startDate.toLocaleString(DateTime.DATE_SHORT),
+        startDate.toLocaleString(DateTime.TIME_SIMPLE),
+        endDate.toLocaleString(DateTime.TIME_SIMPLE),
+      );
     });
   },
 });
@@ -65,20 +72,29 @@ export default defineComponent({
               <th scope="col">#</th>
               <th scope="col">Date</th>
               <th scope="col">Building</th>
-              <th scope="col">Topic</th>
+              <th scope="col">Subject</th>
               <th scope="col">Time</th>
               <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
-            <tr class="align-middle" v-for="(session, i) in printableSessions" :key="session.id">
+            <tr
+              class="align-middle"
+              v-for="(session, i) in printableSessions"
+              :key="session.sessionId"
+            >
               <th scope="row">{{ i + 1 }}</th>
-              <td>{{ session.startDate }}</td>
+              <td>{{ session.date }}</td>
               <td>{{ session.building }}</td>
-              <td>{{ session.topic }}</td>
+              <td>{{ session.subject }}</td>
               <td>{{ session.startTime }} - {{ session.endTime }}</td>
               <td>
-                <button class="btn btn-primary align-end">See details</button>
+                <button
+                  @click="$router.push({ name: 'SessionView', params: { id: session.sessionId } })"
+                  class="btn btn-primary align-end"
+                >
+                  See details
+                </button>
               </td>
             </tr>
           </tbody>
