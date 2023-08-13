@@ -1,20 +1,23 @@
 $white: #ffffff;
 
 $theme-colors: (
-    "light":      #e1e0e3,
-    "dark":       #253036,
-    "primary":    #4da168,
-    "secondary":  #e5ab3a,
-    "info":       #7574e8,
-    "success":    #1fc031,
-    "warning":    #fdcb1c,
-    "danger":     #fd0e4c,
+  'light': #e1e0e3,
+  'dark': #253036,
+  'primary': #4da168,
+  'secondary': #e5ab3a,
+  'info': #7574e8,
+  'success': #1fc031,
+  'warning': #fdcb1c,
+  'danger': #fd0e4c,
 );
 
-@mixin gradient-x($start-color: $gray-700, $end-color: $gray-800, $start-percent: 0%, $end-percent: 100%) {
-    background-image: linear-gradient(to right, $start-color $start-percent, $end-color $end-percent);
-  }
-  
+@mixin gradient-x(
+  $start-color: $gray-700,
+  $end-color: $gray-800,
+  $start-percent: 0%,
+  $end-percent: 100%
+) {
+  background-image: linear-gradient(to right, $start-color $start-percent, $end-color $end-percent);
+}
 
-
-@import "bootstrap"
+@import 'bootstrap';
