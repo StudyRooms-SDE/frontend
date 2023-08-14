@@ -47,6 +47,7 @@ export default defineComponent({
         startDate.toLocaleString(DateTime.DATE_SHORT),
         startDate.toLocaleString(DateTime.TIME_SIMPLE),
         endDate.toLocaleString(DateTime.TIME_SIMPLE),
+        false,
       );
     });
   },

@@ -31,6 +31,7 @@ export class PrintableSession {
   date: string;
   startTime: string;
   endTime: string;
+  createdByUser: boolean;
 
   constructor(
     sessionId: string,
@@ -40,6 +41,7 @@ export class PrintableSession {
     date: string,
     startTime: string,
     endTime: string,
+    createdByUser: boolean,
   ) {
     this.sessionId = sessionId;
     this.building = building;
@@ -48,6 +50,7 @@ export class PrintableSession {
     this.date = date;
     this.startTime = startTime;
     this.endTime = endTime;
+    this.createdByUser = createdByUser;
   }
 }
 
@@ -57,6 +60,7 @@ export class SessionDetails {
   topic: string;
   startTime: string;
   endTime: string;
+  createdByUser: boolean;
   room: roomResponse;
   files: fileResponse[];
 
@@ -66,6 +70,7 @@ export class SessionDetails {
     topic: string,
     startTime: string,
     endTime: string,
+    createdByUser: boolean,
     room: roomResponse,
     files: fileResponse[],
   ) {
@@ -74,6 +79,7 @@ export class SessionDetails {
     this.topic = topic;
     this.startTime = startTime;
     this.endTime = endTime;
+    this.createdByUser = createdByUser;
     this.room = room;
     this.files = files;
   }

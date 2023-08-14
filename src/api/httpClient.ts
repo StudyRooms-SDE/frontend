@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { notify } from '@kyvg/vue3-notification';
+import Error from '@/models/errorResponse';
 
 const httpClient = axios.create({
   withCredentials: true,
@@ -22,56 +23,53 @@ httpClient.defaults.withCredentials = true;
 
 // httpClient.interceptors.request.use(authInterceptor);
 
-const errorInterceptor = (error: any): Promise<never> => {
-  console.log(error)
-  switch (error.response.status) {
+const errorInterceptor = (errorResponse: any): Promise<never> => {
+  const error: Error = errorResponse.response.data;
+  switch (error.status) {
     case 401:
-      console.log(error.response.data);
       notify({
         type: 'error',
-        title: error.response.status.toString(),
-        text: 'You are not authorized to access this resource',
+        title: error.status.toString(),
+        text: error.message,
       });
       break;
     case 403:
-      console.log(error.response.data);
       notify({
         type: 'error',
-        title: error.response.status.toString(),
-        text: 'You are not authorized to access this resource',
+        title: error.status.toString(),
+        text: error.message,
       });
       break;
     case 404:
-      console.log(error.response.data);
       notify({
         type: 'error',
-        title: error.response.status.toString(),
-        text: 'The resource you are looking for was not found',
+        title: error.status.toString(),
+        text: error.message,
       });
       break;
     case 409:
-      console.log(error.response.data);
       notify({
         type: 'error',
-        title: error.response.status.toString(),
-        text: 'Credentials already in use',
+        title: error.status.toString(),
+        text: error.message,
       });
       break;
     case 500:
-      console.log(error.response.data);
-
       notify({
         type: 'error',
-        title: error.response.status.toString(),
-        text: 'An error occurred on the server',
+        title: error.status.toString(),
+        text: error.message,
       });
       break;
     default:
-      console.log(error.response.data);
-
+      notify({
+        type: 'error',
+        text: 'unknown error',
+      });
+      console.log(errorResponse);
       break;
   }
-  return Promise.reject(error);
+  return Promise.reject(errorResponse);
 };
 
 const responseInterceptor = (response: any) => {
