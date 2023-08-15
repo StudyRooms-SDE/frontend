@@ -9,6 +9,10 @@ const sessionEndPoint = {
   getSessionDetails: (id: string) => {
     return httpClient.get<SessionDetails>('/sessions/' + id, {});
   },
+
+  deleteSession: (id: string) => {
+    return httpClient.delete('/sessions/' + id, {});
+  },
 };
 
 export default sessionEndPoint;

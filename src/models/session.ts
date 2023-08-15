@@ -1,4 +1,4 @@
-import type { fileResponse } from './fileResponse';
+import type { FileResponse } from './fileResponse';
 import type { roomResponse } from './roomResponse';
 
 export class SessionResponse {
@@ -62,7 +62,7 @@ export class SessionDetails {
   endTime: string;
   createdByUser: boolean;
   room: roomResponse;
-  files: fileResponse[];
+  files: FileResponse[];
 
   constructor(
     sessionId: string,
@@ -72,7 +72,7 @@ export class SessionDetails {
     endTime: string,
     createdByUser: boolean,
     room: roomResponse,
-    files: fileResponse[],
+    files: FileResponse[],
   ) {
     this.sessionId = sessionId;
     this.subject = subject;

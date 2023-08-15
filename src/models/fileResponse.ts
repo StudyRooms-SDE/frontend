@@ -1,4 +1,4 @@
-export class fileResponse {
+export class FileResponse {
   id: string;
   name: string;
   url: string;

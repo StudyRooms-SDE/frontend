@@ -5,7 +5,7 @@ import Error from '@/models/errorResponse';
 const httpClient = axios.create({
   withCredentials: true,
   baseURL: 'http://localhost:8080/api/v1',
-  timeout: 5000,
+  timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -14,14 +14,6 @@ const httpClient = axios.create({
 });
 
 httpClient.defaults.withCredentials = true;
-// const getAuthToken = () => localStorage.getItem('token');
-
-// const authInterceptor = (config: any) => {
-//   config.headers['Authorization'] = getAuthToken();
-//   return config;
-// };
-
-// httpClient.interceptors.request.use(authInterceptor);
 
 const errorInterceptor = (errorResponse: any): Promise<never> => {
   const error: Error = errorResponse.response.data;
@@ -76,19 +68,12 @@ const responseInterceptor = (response: any) => {
   switch (response.status) {
     case 200:
       console.log(response.data);
-      // notify({
-      //   type: 'success',
-      //   title: response.status.toString(),
-      //   text: 'Success',
-      // });
       break;
     case 201:
       console.log(response.data);
-      notify({
-        type: 'success',
-        title: response.status.toString(),
-        text: 'Created',
-      });
+      break;
+    case 204:
+      console.log(response.data);
       break;
     default:
       console.log(response.data);

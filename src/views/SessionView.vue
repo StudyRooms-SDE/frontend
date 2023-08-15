@@ -1,10 +1,10 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useSessionStore } from '@/stores/sessionStore';
 import { mapState, mapActions } from 'pinia';
 import { DateTime } from 'luxon';
 import type { roomResponse } from '@/models/roomResponse';
-import type { fileResponse } from '@/models/fileResponse';
+import type { FileResponse } from '@/models/fileResponse';
 import { PrintableSession } from '@/models/session';
 import 'leaflet/dist/leaflet.css';
 import { LMap, LTileLayer, LMarker, LTooltip } from '@vue-leaflet/vue-leaflet';
@@ -15,25 +15,33 @@ export default defineComponent({
   data: () => ({
     details: {} as PrintableSession,
     room: {} as roomResponse,
-    files: [] as fileResponse[],
+    files: [] as FileResponse[],
     center: [46.06777, 11.12355] as PointExpression,
     marker: null as LatLng | null,
     zoom: 13,
   }),
+
+  setup() {
+    return {
+      fileInput: ref<HTMLInputElement | null>(null),
+    };
+  },
+
   components: {
     LMap,
     LTileLayer,
     LMarker,
     LTooltip,
   },
+
   props: {
     id: {
       type: String,
       required: true,
     },
   },
+
   async created() {
-    console.log(this.id);
     await this.sessionDetails(this.id);
 
     const startDate = DateTime.fromFormat(
@@ -71,18 +79,39 @@ export default defineComponent({
   },
 
   methods: {
-    ...mapActions(useSessionStore, ['sessionDetails']),
+    ...mapActions(useSessionStore, [
+      'sessionDetails',
+      'deleteFileAction',
+      'uploadFileAction',
+      'deleteSessionAction',
+    ]),
 
     downloadFile(url: string) {
       window.open(url, '_blank');
     },
 
-    deleteFile(fileId: string) {
-      console.log('not implemented');
+    async deleteFile(fileId: string) {
+      await this.deleteFileAction(this.id, fileId);
+      this.files = this.getSessionDetails!.files;
     },
 
-    deleteSession(sessionId: string) {
-      console.log('not implemented');
+    async deleteSession() {
+      await this.deleteSessionAction(this.id);
+      this.$router.push({ path: '/dashboard' });
+    },
+
+    async leaveSession() {
+      console.log('leave session');
+    },
+
+    async handleFileChange() {
+      console.log(this.fileInput!);
+    },
+
+    async uploadFile() {
+      const fileToUpload = this.fileInput!.files![0];
+      await this.uploadFileAction(this.id, fileToUpload);
+      this.files = this.getSessionDetails!.files;
     },
   },
 });
@@ -147,20 +176,15 @@ export default defineComponent({
                 </div>
               </div>
             </div>
-            <div v-if="files.length !== 0" class="row">
+            <div class="row">
               <div class="col-2 bg-primary"></div>
               <div class="col-10">
                 <h6>Files</h6>
                 <hr class="mt-0 mb-2 border-secondary border-3" />
-                <table class="table table-striped table-responsive text-center">
-                  <!-- <thead>
-                    <tr>
-                      <th scope="col"></th>
-                      <th scope="col">File Name</th>
-                      <th scope="col"></th>
-                      <th scope="col"></th>
-                    </tr>
-                  </thead> -->
+                <table
+                  v-if="files.length !== 0"
+                  class="table table-striped table-responsive text-center"
+                >
                   <tbody>
                     <tr class="align-middle" v-for="(file, i) in files" :key="file.id">
                       <th scope="row">{{ i + 1 }}</th>
@@ -171,11 +195,7 @@ export default defineComponent({
                         </button>
                       </td>
                       <td>
-                        <button
-                          v-if="details.createdByUser"
-                          @click="deleteFile(file.id)"
-                          class="btn btn-primary align-end"
-                        >
+                        <button @click="deleteFile(file.id)" class="btn btn-primary align-end">
                           Delete
                         </button>
                       </td>
@@ -183,15 +203,27 @@ export default defineComponent({
                   </tbody>
                 </table>
               </div>
-            </div>
-            <div v-if="details.createdByUser" class="row">
-              <div class="col-2 bg-primary"></div>
-              <div class="col-10">
+              <div class="row">
                 <div class="col-2 bg-primary"></div>
-                <div class="col-10 text-center">
-                  <button @click="deleteSession(details.sessionId)" class="btn btn-primary">
-                    Delete Session
-                  </button>
+                <div class="col border-0 text-center">
+                  <form class="mb-2" @submit.prevent="uploadFile()">
+                    <input ref="fileInput" @change="handleFileChange()" type="file" required />
+                    <button type="submit" class="btn btn-primary">Upload File</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-2 bg-primary"></div>
+
+              <div class="col-10 mb-2">
+                <h6>Options</h6>
+                <hr class="mt-0 mb-2 border-secondary border-3" />
+                <div v-if="details.createdByUser" class="text-center">
+                  <button @click="deleteSession()" class="btn btn-primary">Delete Session</button>
+                </div>
+                <div v-else class="text-center">
+                  <button @click="leaveSession()" class="btn btn-primary">Leave Session</button>
                 </div>
               </div>
             </div>
@@ -209,7 +241,7 @@ export default defineComponent({
             <l-marker v-if="marker !== null" :lat-lng="marker">
               <l-tooltip>
                 <div class="text-center">
-                  <h6>{{ room.name }}</h6>
+                  <h6>{{ room.building }}</h6>
                   <p>{{ room.address }}</p>
                 </div>
               </l-tooltip>
