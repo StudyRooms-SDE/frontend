@@ -2,31 +2,20 @@
 import { defineComponent } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import { mapActions, mapState } from 'pinia';
-import ModalComponent from '@/components/ModalComponent.vue';
+import router from '@/router';
 
 export default defineComponent({
   name: 'ProfileView',
-  components: { ModalComponent },
 
   computed: {
     ...mapState(useUserStore, ['getUser']),
   },
   methods: {
-    ...mapActions(useUserStore, ['getUserInfo']),
+    ...mapActions(useUserStore, ['getUserInfo', 'deleteUserAction']),
 
     async deleteUser() {
-      //@ts-ignore
-      const response = await this.$refs.confirmDialogue.open({
-        modalId: 'deleteProfile',
-        title: 'Delete your profile',
-        message: 'Are you sure you want to delete your account? This action will be permanent.',
-      });
-      console.log(response);
-      if (response) {
-        console.log('Deleting user...');
-      } else {
-        console.log('Cancelled!');
-      }
+      await this.deleteUserAction();
+      router.push({path: '/'})
     },
   },
 
@@ -81,5 +70,4 @@ export default defineComponent({
       </div>
     </div>
   </div>
-  <ModalComponent ref="confirmDialogue"></ModalComponent>
 </template>

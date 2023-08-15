@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { SessionResponse, SessionDetails } from '@/models/session';
+import { SessionResponse, SessionDetails, SessionRequest } from '@/models/session';
 import sessionEndPoint from '@/api/sessionEndPoint';
 import { notify } from '@kyvg/vue3-notification';
 import fileEndPoint from '@/api/fileEndPoint';
@@ -7,12 +7,16 @@ import fileEndPoint from '@/api/fileEndPoint';
 export const useSessionStore = defineStore('session', {
   state: () => ({
     sessions: null as SessionResponse[] | null,
+    filteredSessions: null as SessionResponse[] | null,
     details: null as SessionDetails | null,
+    subjects: [] as string[],
   }),
 
   getters: {
     getSessions: (state) => state.sessions,
     getSessionDetails: (state) => state.details,
+    getSubjects: (state) => state.subjects,
+    getFilteredSessions: (state) => state.filteredSessions,
   },
 
   actions: {
@@ -41,6 +45,54 @@ export const useSessionStore = defineStore('session', {
       }
     },
 
+    async getSubjectsAction() {
+      const response = await sessionEndPoint.gteSubjects();
+      if (response.status === 200) {
+        this.subjects = response.data;
+      }
+    },
+
+    async getSessionsBySubjectAction(subject: string) {
+      const response = await sessionEndPoint.getSessionsBySubject(subject);
+      if (response.status === 200) {
+        this.filteredSessions = response.data;
+      }
+    },
+
+    async joinSessionAction(sessionId: string) {
+      const response = await sessionEndPoint.joinSession(sessionId);
+      if (response.status === 201) {
+        notify({
+          title: 'Success',
+          text: 'Joined session',
+          type: 'success',
+        });
+      }
+    },
+
+    async leaveSessionAction(sessionId: string) {
+      const response = await sessionEndPoint.leaveSession(sessionId);
+      if (response.status === 204) {
+        notify({
+          title: 'Success',
+          text: 'Left session',
+          type: 'success',
+        });
+      }
+    },
+
+    async createSessionAction(session: SessionRequest) {
+      const response = await sessionEndPoint.createSession(session);
+      if (response.status === 201) {
+        notify({
+          title: 'Success',
+          text: 'Session created',
+          type: 'success',
+        });
+      }
+    },
+
+    //----------------------- Files -----------------------//
     async filesAction(sessionId: string) {
       const response = await fileEndPoint.getFiles(sessionId);
       if (response.status === 200) {

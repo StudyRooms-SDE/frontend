@@ -29,6 +29,10 @@ const userEndPoint = {
   getUserInfo: () => {
     return httpClient.get<UserInfo>('/me', {});
   },
+
+  deleteUser: () => {
+    return httpClient.delete<void>('/me', {});
+  }
 };
 
 export default userEndPoint;

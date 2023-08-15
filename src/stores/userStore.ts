@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import UserEndPoint from '@/api/userEndPoint';
 import { User, UserInfo } from '@/models/user';
+import { notify } from '@kyvg/vue3-notification';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -33,5 +34,16 @@ export const useUserStore = defineStore('user', {
       const response = await UserEndPoint.getUserInfo();
       this.user = response.data;
     },
+
+    async deleteUserAction() {
+      await UserEndPoint.deleteUser();
+      this.user = null;
+      this.loggedIn = false;
+      notify({
+        title: 'Success',
+        text: 'User deleted',
+        type: 'success',
+      });
+    }
   },
 });

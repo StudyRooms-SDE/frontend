@@ -84,6 +84,7 @@ export default defineComponent({
       'deleteFileAction',
       'uploadFileAction',
       'deleteSessionAction',
+      'leaveSessionAction'
     ]),
 
     downloadFile(url: string) {
@@ -101,7 +102,9 @@ export default defineComponent({
     },
 
     async leaveSession() {
-      console.log('leave session');
+      await this.leaveSessionAction(this.id);
+      this.$router.push({ path: '/dashboard' });
+
     },
 
     async handleFileChange() {
@@ -202,16 +205,14 @@ export default defineComponent({
                     </tr>
                   </tbody>
                 </table>
-              </div>
-              <div class="row">
-                <div class="col-2 bg-primary"></div>
-                <div class="col border-0 text-center">
-                  <form class="mb-2" @submit.prevent="uploadFile()">
+                <div class="col text-center pt-2 mt-2">
+                  <form class="mb-2 " @submit.prevent="uploadFile()">
                     <input ref="fileInput" @change="handleFileChange()" type="file" required />
                     <button type="submit" class="btn btn-primary">Upload File</button>
                   </form>
                 </div>
               </div>
+
             </div>
             <div class="row">
               <div class="col-2 bg-primary"></div>
