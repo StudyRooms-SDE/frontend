@@ -10,7 +10,6 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import { notify } from '@kyvg/vue3-notification';
 
-
 export default defineComponent({
   name: 'CreateSession',
 
@@ -21,7 +20,7 @@ export default defineComponent({
       room: null as RoomResponse | null,
       subject: '',
       topic: '',
-      dates: ref<Date[]>()
+      dates: ref<Date[]>(),
     };
   },
 
@@ -38,8 +37,8 @@ export default defineComponent({
         });
         return;
       }
-      const startDate = DateTime.fromJSDate(this.dates[0])
-      const endDate = DateTime.fromJSDate(this.dates[1])
+      const startDate = DateTime.fromJSDate(this.dates[0]);
+      const endDate = DateTime.fromJSDate(this.dates[1]);
       if (startDate >= endDate || startDate < DateTime.now()) {
         notify({
           type: 'error',
@@ -53,7 +52,7 @@ export default defineComponent({
         this.subject,
         this.topic,
         startDate!.toLocal().toFormat("yyyy-MM-dd'T'HH:mm:ss"),
-        endDate!.toLocal().toFormat("yyyy-MM-dd'T'HH:mm:ss")
+        endDate!.toLocal().toFormat("yyyy-MM-dd'T'HH:mm:ss"),
       );
       await this.createSessionAction(sessionRequest);
 
@@ -71,9 +70,9 @@ export default defineComponent({
     await this.getRoomsAction();
 
     const startDate = new Date(new Date().setHours(new Date().getHours(), 0, 0, 0));
-    const endDate = startDate
+    const endDate = startDate;
     this.dates = [startDate, endDate];
-  }
+  },
 });
 </script>
 
@@ -105,9 +104,17 @@ export default defineComponent({
           </div>
           <div class="form-group m-3">
             <label for="date">Date</label>
-            <VueDatePicker v-model="dates" range auto-range="0" minutesIncrement="30" id="date"></VueDatePicker>
+            <VueDatePicker
+              v-model="dates"
+              range
+              auto-range="0"
+              minutesIncrement="30"
+              id="date"
+            ></VueDatePicker>
           </div>
-          <button class="w-100 btn btn-lg btn-secondary mr-3 mt-3" type="submit">Create session</button>
+          <button class="w-100 btn btn-lg btn-secondary mr-3 mt-3" type="submit">
+            Create session
+          </button>
         </form>
       </div>
       <div class="col-md-2"></div>

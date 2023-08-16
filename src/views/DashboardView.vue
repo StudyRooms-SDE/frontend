@@ -103,9 +103,9 @@ export default defineComponent({
   <div class="container d-flex align-items-center vh-100 mt-5 pt-5" style="flex-direction: column">
     <div class="row w-100">
       <div class="col-2"></div>
-      <div class="col-8">
+      <div class="col-8 ">
         <div class="text-center m-2 mb-4">
-          <router-link to="/create" class="btn btn-secondary"> Create a new session </router-link>
+          <router-link to="/create" class="btn btn-secondary "> Create a new session </router-link>
         </div>
       </div>
       <div class="col-2"></div>
@@ -121,7 +121,7 @@ export default defineComponent({
 
     <div v-else class="row w-100">
       <div class="col-2"></div>
-      <div class="col bg-white p-5 pt-4 pb-4">
+      <div class="col bg-white p-5 pt-4 pb-4 shadow-lg">
         <h3 class="text-start">Joined sessions</h3>
         <table class="table table-striped table-responsive text-center">
           <thead>
@@ -164,7 +164,7 @@ export default defineComponent({
 
     <div class="row w-100 pt-5">
       <div class="col-2"></div>
-      <div class="col-8 bg-white p-5 pt-4 pb-4">
+      <div class="col-8 bg-white p-5 pt-4 pb-4 shadow-lg">
         <h3 class="text-start">Join existing sessions based on the subject!</h3>
         <form @submit.prevent="searchSessions()">
           <div class="form-group">

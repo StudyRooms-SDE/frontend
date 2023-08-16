@@ -32,12 +32,12 @@ export default defineComponent({
 <template>
   <div class="container py-5">
     <div class="row d-flex justify-content-center align-items-center min-vh-100">
-      <div class="col col-lg-8 mb-4 mb-lg-0">
-        <div class="card mb-3" style="border-radius: 0.5rem">
-          <div class="row g-0">
+      <div class="col col-lg-8 ">
+        <div class="card shadow-lg" style="border-radius: 0.5rem">
+          <div class="row">
             <div class="col-md-3 bg-primary bg-gradient"></div>
             <div class="col-md-9">
-              <div class="card-body p-4">
+              <div class="card-body">
                 <h6>Information</h6>
                 <hr class="mt-0 mb-4" />
                 <div class="row pt-1">
