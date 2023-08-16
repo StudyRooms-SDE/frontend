@@ -3,7 +3,7 @@ import { defineComponent, ref } from 'vue';
 import { useSessionStore } from '@/stores/sessionStore';
 import { mapState, mapActions } from 'pinia';
 import { DateTime } from 'luxon';
-import type { roomResponse } from '@/models/roomResponse';
+import type { RoomResponse } from '@/models/roomResponse';
 import type { FileResponse } from '@/models/fileResponse';
 import { PrintableSession } from '@/models/session';
 import 'leaflet/dist/leaflet.css';
@@ -14,7 +14,7 @@ export default defineComponent({
   name: 'SessionView',
   data: () => ({
     details: {} as PrintableSession,
-    room: {} as roomResponse,
+    room: {} as RoomResponse,
     files: [] as FileResponse[],
     center: [46.06777, 11.12355] as PointExpression,
     marker: null as LatLng | null,
@@ -84,7 +84,7 @@ export default defineComponent({
       'deleteFileAction',
       'uploadFileAction',
       'deleteSessionAction',
-      'leaveSessionAction'
+      'leaveSessionAction',
     ]),
 
     downloadFile(url: string) {
@@ -104,7 +104,6 @@ export default defineComponent({
     async leaveSession() {
       await this.leaveSessionAction(this.id);
       this.$router.push({ path: '/dashboard' });
-
     },
 
     async handleFileChange() {
@@ -134,7 +133,7 @@ export default defineComponent({
               <div class="col-md-5">
                 <div class="card-body p-4">
                   <h6>Room</h6>
-                  <hr class="mt-0 mb-2 border-secondary border-3" />
+                  <hr class="mt-0 mb-2 border-primary border-3" />
                   <div class="row pt-1">
                     <div class="col">
                       <h6>Building</h6>
@@ -158,7 +157,7 @@ export default defineComponent({
 
               <div class="col-md-5 pt-4">
                 <h6>Session</h6>
-                <hr class="mt-0 mb-2 border-secondary border-3" />
+                <hr class="mt-0 mb-2 border-primary border-3" />
                 <div class="row pt-1">
                   <div class="col">
                     <h6>Subject</h6>
@@ -183,7 +182,7 @@ export default defineComponent({
               <div class="col-2 bg-primary"></div>
               <div class="col-10">
                 <h6>Files</h6>
-                <hr class="mt-0 mb-2 border-secondary border-3" />
+                <hr class="mt-0 mb-2 border-primary border-3" />
                 <table
                   v-if="files.length !== 0"
                   class="table table-striped table-responsive text-center"
@@ -193,12 +192,12 @@ export default defineComponent({
                       <th scope="row">{{ i + 1 }}</th>
                       <td>{{ file.name }}</td>
                       <td>
-                        <button @click="downloadFile(file.url)" class="btn btn-primary align-end">
+                        <button @click="downloadFile(file.url)" class="btn btn-secondary align-end">
                           Download
                         </button>
                       </td>
                       <td>
-                        <button @click="deleteFile(file.id)" class="btn btn-primary align-end">
+                        <button @click="deleteFile(file.id)" class="btn btn-secondary align-end">
                           Delete
                         </button>
                       </td>
@@ -206,25 +205,24 @@ export default defineComponent({
                   </tbody>
                 </table>
                 <div class="col text-center pt-2 mt-2">
-                  <form class="mb-2 " @submit.prevent="uploadFile()">
+                  <form class="mb-2" @submit.prevent="uploadFile()">
                     <input ref="fileInput" @change="handleFileChange()" type="file" required />
-                    <button type="submit" class="btn btn-primary">Upload File</button>
+                    <button type="submit" class="btn btn-secondary">Upload File</button>
                   </form>
                 </div>
               </div>
-
             </div>
             <div class="row">
               <div class="col-2 bg-primary"></div>
 
               <div class="col-10 mb-2">
                 <h6>Options</h6>
-                <hr class="mt-0 mb-2 border-secondary border-3" />
+                <hr class="mt-0 mb-2 border-primary border-3" />
                 <div v-if="details.createdByUser" class="text-center">
-                  <button @click="deleteSession()" class="btn btn-primary">Delete Session</button>
+                  <button @click="deleteSession()" class="btn btn-secondary">Delete Session</button>
                 </div>
                 <div v-else class="text-center">
-                  <button @click="leaveSession()" class="btn btn-primary">Leave Session</button>
+                  <button @click="leaveSession()" class="btn btn-secondary">Leave Session</button>
                 </div>
               </div>
             </div>

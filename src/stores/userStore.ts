@@ -44,6 +44,6 @@ export const useUserStore = defineStore('user', {
         text: 'User deleted',
         type: 'success',
       });
-    }
+    },
   },
 });

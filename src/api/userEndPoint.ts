@@ -32,7 +32,7 @@ const userEndPoint = {
 
   deleteUser: () => {
     return httpClient.delete<void>('/me', {});
-  }
+  },
 };
 
 export default userEndPoint;

@@ -89,8 +89,8 @@ export default defineComponent({
         return this.printableSession(session);
       });
 
-      this.printableFilteredSessions = this.getFilteredSessions!.filter((session) =>
-        session.sessionId !== sessionId,
+      this.printableFilteredSessions = this.getFilteredSessions!.filter(
+        (session) => session.sessionId !== sessionId,
       ).map((session) => {
         return this.printableSession(session);
       });

@@ -1,4 +1,4 @@
-export class roomResponse {
+export class RoomResponse {
   id: string;
   name: string;
   building: string;

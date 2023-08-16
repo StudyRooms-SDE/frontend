@@ -27,12 +27,19 @@ const sessionEndPoint = {
   },
 
   createSession: (session: SessionRequest) => {
-    return httpClient.post<void>('/sessions', session);
+    console.log(session);
+    return httpClient.post<void>('/sessions', {
+      roomId: session.roomId,
+      subject: session.subject,
+      topic: session.topic,
+      startTime: session.startTime,
+      endTime: session.endTime,
+    });
   },
 
   leaveSession: (id: string) => {
     return httpClient.post<void>('/sessions/' + id + '/leave');
-  }
+  },
 };
 
 export default sessionEndPoint;

@@ -1,5 +1,5 @@
 import type { FileResponse } from './fileResponse';
-import type { roomResponse } from './roomResponse';
+import type { RoomResponse } from './roomResponse';
 
 export class SessionResponse {
   sessionId: string;
@@ -67,7 +67,7 @@ export class SessionDetails {
   startTime: string;
   endTime: string;
   createdByUser: boolean;
-  room: roomResponse;
+  room: RoomResponse;
   files: FileResponse[];
 
   constructor(
@@ -77,7 +77,7 @@ export class SessionDetails {
     startTime: string,
     endTime: string,
     createdByUser: boolean,
-    room: roomResponse,
+    room: RoomResponse,
     files: FileResponse[],
   ) {
     this.sessionId = sessionId;

@@ -15,7 +15,7 @@ export default defineComponent({
 
     async deleteUser() {
       await this.deleteUserAction();
-      router.push({path: '/'})
+      router.push({ path: '/' });
     },
   },
 
