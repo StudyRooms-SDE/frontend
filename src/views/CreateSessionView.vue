@@ -66,8 +66,8 @@ export default defineComponent({
   },
 
   async mounted() {
-    await this.getSubjectsAction();
     await this.getRoomsAction();
+    await this.getSubjectsAction();
 
     const startDate = new Date(new Date().setHours(new Date().getHours(), 0, 0, 0));
     const endDate = startDate;
@@ -86,7 +86,7 @@ export default defineComponent({
           <div class="form-group m-3">
             <label for="subjects">Room</label>
             <select class="form-control" id="rooms" v-model="room" required>
-              <option v-for="room in getRooms" :key="room.id" :value="room">
+              <option v-if="getRooms !== null && getRooms.length !== 0 " v-for="room in getRooms" :key="room.id" :value="room">
                 {{ room.building }}, {{ room.name }}
               </option>
             </select>
