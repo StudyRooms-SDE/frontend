@@ -4,7 +4,7 @@ import Error from '@/models/errorResponse';
 
 const httpClient = axios.create({
   withCredentials: true,
-  baseURL: 'http://localhost:8080/api/v1',
+  baseURL: import.meta.env.VITE_BACKEND_BASE_URL,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
@@ -12,7 +12,6 @@ const httpClient = axios.create({
     'X-Requested-With': 'XMLHttpRequest',
   },
 });
-
 httpClient.defaults.withCredentials = true;
 
 const errorInterceptor = (errorResponse: any): Promise<never> => {
