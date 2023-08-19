@@ -32,7 +32,7 @@ export default defineComponent({
 <template>
   <div class="container py-5">
     <div class="row d-flex justify-content-center align-items-center min-vh-100">
-      <div class="col col-lg-8 ">
+      <div class="col col-lg-8">
         <div class="card shadow-lg" style="border-radius: 0.5rem">
           <div class="row">
             <div class="col-md-3 bg-primary bg-gradient"></div>

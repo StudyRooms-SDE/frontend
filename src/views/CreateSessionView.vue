@@ -86,7 +86,12 @@ export default defineComponent({
           <div class="form-group m-3">
             <label for="subjects">Room</label>
             <select class="form-control" id="rooms" v-model="room" required>
-              <option v-if="getRooms !== null && getRooms.length !== 0 " v-for="room in getRooms" :key="room.id" :value="room">
+              <option
+                v-if="getRooms !== null && getRooms.length !== 0"
+                v-for="room in getRooms"
+                :key="room.id"
+                :value="room"
+              >
                 {{ room.building }}, {{ room.name }}
               </option>
             </select>

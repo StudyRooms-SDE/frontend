@@ -67,9 +67,14 @@ export default defineComponent({
       await this.getSessionsBySubjectAction(this.subject);
       this.printableFilteredSessions = this.getFilteredSessions!.filter((session) =>
         this.getSessions!.every((s) => s.sessionId !== session.sessionId),
-      ).map((session) => {
-        return this.printableSession(session);
-      });
+      )
+        .map((session) => {
+          return this.printableSession(session);
+        })
+        .filter(
+          (session) =>
+            DateTime.fromFormat(session.date, 'dd/MM/yyyy').toMillis() >= DateTime.now().toMillis(),
+        );
 
       if (this.printableFilteredSessions === null || this.printableFilteredSessions.length === 0) {
         this.$notify({
@@ -103,9 +108,9 @@ export default defineComponent({
   <div class="container d-flex align-items-center vh-100 mt-5 pt-5" style="flex-direction: column">
     <div class="row w-100">
       <div class="col-2"></div>
-      <div class="col-8 ">
+      <div class="col-8">
         <div class="text-center m-2 mb-4">
-          <router-link to="/create" class="btn btn-secondary "> Create a new session </router-link>
+          <router-link to="/create" class="btn btn-secondary"> Create a new session </router-link>
         </div>
       </div>
       <div class="col-2"></div>
