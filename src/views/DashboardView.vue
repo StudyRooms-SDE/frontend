@@ -28,7 +28,6 @@ export default defineComponent({
 
   async mounted() {
     await this.getSubjectsAction();
-    this.getSubjects.push('All');
   },
 
   methods: {

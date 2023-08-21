@@ -2,10 +2,6 @@ import httpClient from '@/api/httpClient';
 import { SessionResponse, SessionDetails, SessionRequest } from '@/models/session';
 
 const sessionEndPoint = {
-  getSessions: () => {
-    return httpClient.get<SessionResponse[]>('/sessions');
-  },
-
   getUserSessions: () => {
     return httpClient.get<SessionResponse[]>('/sessions/me', {});
   },
@@ -31,7 +27,6 @@ const sessionEndPoint = {
   },
 
   createSession: (session: SessionRequest) => {
-    console.log(session);
     return httpClient.post<void>('/sessions', {
       roomId: session.roomId,
       subject: session.subject,

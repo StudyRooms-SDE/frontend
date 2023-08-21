@@ -66,16 +66,16 @@ const errorInterceptor = (errorResponse: any): Promise<never> => {
 const responseInterceptor = (response: any) => {
   switch (response.status) {
     case 200:
-      console.log(response.data);
+      console.log('ok');
       break;
     case 201:
-      console.log(response.data);
+      console.log('created');
       break;
     case 204:
-      console.log(response.data);
+      console.log('no content');
       break;
     default:
-      console.log(response.data);
+      console.log(response);
       break;
   }
   return response;

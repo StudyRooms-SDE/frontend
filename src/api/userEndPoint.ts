@@ -18,7 +18,6 @@ const userEndPoint = {
   },
 
   register: (user: User) => {
-    console.log(user);
     return httpClient.post<void>('/auth/register', {
       username: user.username,
       password: user.password,

@@ -3,7 +3,6 @@ import { SessionResponse, SessionDetails, SessionRequest } from '@/models/sessio
 import sessionEndPoint from '@/api/sessionEndPoint';
 import { notify } from '@kyvg/vue3-notification';
 import fileEndPoint from '@/api/fileEndPoint';
-import type { AxiosResponse } from 'axios';
 
 export const useSessionStore = defineStore('session', {
   state: () => ({
@@ -54,12 +53,7 @@ export const useSessionStore = defineStore('session', {
     },
 
     async getSessionsBySubjectAction(subject: string) {
-      let response: AxiosResponse<SessionResponse[], any>;
-      if (subject === 'All') {
-        response = await sessionEndPoint.getSessions();
-      } else {
-        response = await sessionEndPoint.getSessionsBySubject(subject);
-      }
+      const response = await sessionEndPoint.getSessionsBySubject(subject);
       if (response.status === 200) {
         this.filteredSessions = response.data;
       }
@@ -119,7 +113,6 @@ export const useSessionStore = defineStore('session', {
     },
 
     async uploadFileAction(sessionId: string, file: File) {
-      console.log(file);
       notify({
         title: 'Info',
         text: 'The file is being uploaded. This may take a while',
