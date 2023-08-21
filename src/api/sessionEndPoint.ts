@@ -3,6 +3,10 @@ import { SessionResponse, SessionDetails, SessionRequest } from '@/models/sessio
 
 const sessionEndPoint = {
   getSessions: () => {
+    return httpClient.get<SessionResponse[]>('/sessions');
+  },
+
+  getUserSessions: () => {
     return httpClient.get<SessionResponse[]>('/sessions/me', {});
   },
 

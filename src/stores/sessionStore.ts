@@ -3,6 +3,7 @@ import { SessionResponse, SessionDetails, SessionRequest } from '@/models/sessio
 import sessionEndPoint from '@/api/sessionEndPoint';
 import { notify } from '@kyvg/vue3-notification';
 import fileEndPoint from '@/api/fileEndPoint';
+import type { AxiosResponse } from 'axios';
 
 export const useSessionStore = defineStore('session', {
   state: () => ({
@@ -21,7 +22,7 @@ export const useSessionStore = defineStore('session', {
 
   actions: {
     async userSessions() {
-      const response = await sessionEndPoint.getSessions();
+      const response = await sessionEndPoint.getUserSessions();
       if (response.status === 200) {
         this.sessions = response.data;
       }
@@ -53,7 +54,12 @@ export const useSessionStore = defineStore('session', {
     },
 
     async getSessionsBySubjectAction(subject: string) {
-      const response = await sessionEndPoint.getSessionsBySubject(subject);
+      let response: AxiosResponse<SessionResponse[], any>;
+      if (subject === 'All') {
+        response = await sessionEndPoint.getSessions();
+      } else {
+        response = await sessionEndPoint.getSessionsBySubject(subject);
+      }
       if (response.status === 200) {
         this.filteredSessions = response.data;
       }
