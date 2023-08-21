@@ -2,6 +2,10 @@ import httpClient from '@/api/httpClient';
 import { SessionResponse, SessionDetails, SessionRequest } from '@/models/session';
 
 const sessionEndPoint = {
+  getAllSessions: () => {
+    return httpClient.get<SessionResponse[]>('/sessions');
+  },
+
   getUserSessions: () => {
     return httpClient.get<SessionResponse[]>('/sessions/me', {});
   },
@@ -14,7 +18,7 @@ const sessionEndPoint = {
     return httpClient.delete<void>('/sessions/' + id);
   },
 
-  gteSubjects: () => {
+  getSubjects: () => {
     return httpClient.get<string[]>('/sessions/subjects');
   },
 

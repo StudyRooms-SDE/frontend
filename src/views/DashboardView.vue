@@ -12,6 +12,7 @@ export default defineComponent({
       printableUserSessions: null as PrintableSession[] | null,
       subject: '',
       printableFilteredSessions: null as PrintableSession[] | null,
+      subjects: null as string[] | null,
     };
   },
   computed: {
@@ -22,12 +23,14 @@ export default defineComponent({
     await this.userSessions();
 
     this.printableUserSessions = this.getSessions!.map((session) => {
-      return this.printableSession(session);
+      return this.convertToPrintableSession(session);
     });
   },
 
   async mounted() {
     await this.getSubjectsAction();
+    this.subjects = this.getSubjects;
+    this.subjects.push('All');
   },
 
   methods: {
@@ -38,12 +41,13 @@ export default defineComponent({
       'joinSessionAction',
     ]),
 
-    printableSession(session: SessionResponse): PrintableSession {
+    convertToPrintableSession(session: SessionResponse): PrintableSession {
       const startDate = DateTime.fromFormat(session.startTime, "yyyy-MM-dd'T'HH:mm:ss").setLocale(
-        'it',
+        'en-gb',
       );
-      const endDate = DateTime.fromFormat(session.endTime, "yyyy-MM-dd'T'HH:mm:ss").setLocale('it');
-
+      const endDate = DateTime.fromFormat(session.endTime, "yyyy-MM-dd'T'HH:mm:ss").setLocale(
+        'en-gb',
+      );
       if (startDate.day !== endDate.day) {
         this.$notify({
           title: 'Session error',
@@ -69,7 +73,7 @@ export default defineComponent({
         this.getSessions!.every((s) => s.sessionId !== session.sessionId),
       )
         .map((session) => {
-          return this.printableSession(session);
+          return this.convertToPrintableSession(session);
         })
         .filter(
           (session) =>
@@ -91,13 +95,13 @@ export default defineComponent({
       await this.userSessions();
 
       this.printableUserSessions = this.getSessions!.map((session) => {
-        return this.printableSession(session);
+        return this.convertToPrintableSession(session);
       });
 
       this.printableFilteredSessions = this.getFilteredSessions!.filter(
         (session) => session.sessionId !== sessionId,
       ).map((session) => {
-        return this.printableSession(session);
+        return this.convertToPrintableSession(session);
       });
     },
   },
@@ -167,7 +171,7 @@ export default defineComponent({
       <div class="col-2"></div>
     </div>
 
-    <div class="row w-100 pt-5">
+    <div class="row w-100 pt-5 mb-5">
       <div class="col-2"></div>
       <div class="col-8 bg-white p-5 pt-4 pb-4 shadow-lg">
         <h3 class="text-start">Join existing sessions based on the subject!</h3>
@@ -175,7 +179,7 @@ export default defineComponent({
           <div class="form-group">
             <label for="subjects">Subjects</label>
             <select class="form-control" id="subjects" v-model="subject" required>
-              <option v-for="subject in getSubjects" :key="subject">{{ subject }}</option>
+              <option v-for="subject in subjects" :key="subject">{{ subject }}</option>
             </select>
           </div>
           <div class="text-center pt-3">
